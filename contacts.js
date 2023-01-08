@@ -30,8 +30,28 @@ function removeContact(contactId) {
   // ...твій код
 }
 
-function addContact(name, email, phone) {
-  // ...твій код
+async function addContact(name, email, phone) {
+  const rawData = await fs
+    .readFile(`${contactsPath}`, "utf-8")
+    .then((data) => data)
+    .catch((err) => console.error(err.message));
+  const contacts = JSON.parse(rawData);
+  let contact = {
+    id: `${contacts.length + 1}`,
+    name: `${name}`,
+    email: `${email}`,
+    phone: `${phone}`,
+  };
+  let data = [...contacts, contact];
+  let dataToWrite = JSON.stringify(data, null, 2);
+
+  console.log(dataToWrite);
+
+  fs.writeFile(`${contactsPath}`, dataToWrite, (err) => {
+    if (err) throw err;
+    console.log("Data written to file");
+  });
+  console.log("There is you contacts after upgrade: ", listContacts());
 }
 
 module.exports = {
