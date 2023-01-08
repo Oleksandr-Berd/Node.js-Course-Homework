@@ -26,8 +26,27 @@ async function getContactById(contactId) {
   console.log(contactById);
 }
 
-function removeContact(contactId) {
-  // ...твій код
+async function removeContact(contactId) {
+  const rawData = await fs
+    .readFile(`${contactsPath}`, "utf-8")
+    .then((data) => data)
+    .catch((err) => console.error(err.message));
+  const contacts = JSON.parse(rawData);
+
+  let data = contacts.filter((el) => el.id !== contactId);
+
+  let dataWithCorrectId = data.map((el, index) => {
+    el.id = index + 1;
+    return el;
+  });
+
+  let dataToWrite = JSON.stringify(dataWithCorrectId, null, 2);
+
+  fs.writeFile(`${contactsPath}`, dataToWrite, (err) => {
+    if (err) throw err;
+    console.log("Data written to file");
+  });
+  console.log("There is you contacts after upgrade: ", listContacts());
 }
 
 async function addContact(name, email, phone) {
@@ -44,8 +63,6 @@ async function addContact(name, email, phone) {
   };
   let data = [...contacts, contact];
   let dataToWrite = JSON.stringify(data, null, 2);
-
-  console.log(dataToWrite);
 
   fs.writeFile(`${contactsPath}`, dataToWrite, (err) => {
     if (err) throw err;
