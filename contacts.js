@@ -11,7 +11,7 @@ async function listContacts() {
     .then((data) => data)
     .catch((err) => console.error(err.message));
   const contacts = JSON.parse(rawData);
-  console.log(contacts);
+  console.table(contacts);
 }
 
 async function getContactById(contactId) {
@@ -21,9 +21,10 @@ async function getContactById(contactId) {
     .catch((err) => console.error(err.message));
   const contacts = JSON.parse(rawData);
 
-  const contactById = contacts.filter((el) => el.id === contactId.toString());
+  const contactById = contacts.filter((el) => el.id === Number(contactId));
 
-  console.log(contactById);
+  console.table(contactById);
+  //   console.log(typeof contactId);
 }
 
 async function removeContact(contactId) {
