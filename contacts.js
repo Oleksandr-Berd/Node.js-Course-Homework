@@ -24,7 +24,6 @@ async function getContactById(contactId) {
   const contactById = contacts.filter((el) => el.id === Number(contactId));
 
   console.table(contactById);
-  //   console.log(typeof contactId);
 }
 
 async function removeContact(contactId) {
